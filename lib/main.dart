@@ -1,7 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoder/geocoder.dart';
-
+import 'models/weather.dart';
 import 'repository/weather_repository.dart';
 
 void main() {
@@ -37,6 +38,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String latitude = '';
   String longitude = '';
 
+  late Weather weather;
+
   currentWeatherLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -58,7 +61,15 @@ class _MyHomePageState extends State<MyHomePage> {
     Position position = await _geolocatorPlatform.getCurrentPosition();
     latitude = position.latitude.toString();
     longitude = position.longitude.toString();
-    fetchWeather(latitude, longitude);
+    fetchWeather(latitude, longitude).then(
+      (value) {
+        {
+          setState(() {
+            weather = value;
+          });
+        }
+      },
+    );
   }
 
   @override
@@ -74,9 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(Icons.cloud),
-          ],
+          children: <Widget>[],
         ),
       ),
     );
