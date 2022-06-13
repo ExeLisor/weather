@@ -28,6 +28,23 @@ class Weather {
   int id;
   String name;
   int cod;
+
+  factory Weather.fromJson(Map<String, dynamic> json) => Weather(
+        coord: Coord.fromJson(json["coord"]),
+        weather: List<WeatherElement>.from(
+            json["weather"].map((x) => WeatherElement.fromJson(x))),
+        base: json["base"],
+        main: Main.fromJson(json["main"]),
+        visibility: json["visibility"],
+        wind: Wind.fromJson(json["wind"]),
+        clouds: Clouds.fromJson(json["clouds"]),
+        dt: json["dt"],
+        sys: Sys.fromJson(json["sys"]),
+        timezone: json["timezone"],
+        id: json["id"],
+        name: json["name"],
+        cod: json["cod"],
+      );
 }
 
 class Clouds {
@@ -36,6 +53,10 @@ class Clouds {
   });
 
   int all;
+
+  factory Clouds.fromJson(Map<String, dynamic> json) => Clouds(
+        all: json["all"],
+      );
 }
 
 class Coord {
@@ -46,6 +67,10 @@ class Coord {
 
   double lon;
   double lat;
+  factory Coord.fromJson(Map<String, dynamic> json) => Coord(
+        lon: json["count"],
+        lat: json["lat"],
+      );
 }
 
 class Main {
@@ -60,7 +85,7 @@ class Main {
     required this.grndLevel,
   });
 
-  int temp;
+  double temp;
   double feelsLike;
   int tempMin;
   int tempMax;
@@ -68,6 +93,17 @@ class Main {
   int humidity;
   int seaLevel;
   int grndLevel;
+
+  factory Main.fromJson(Map<String, dynamic> json) => Main(
+        feelsLike: json["feelsLike"],
+        grndLevel: json["grndLevel"],
+        tempMin: json["tempMin"],
+        tempMax: json["tempMax"],
+        pressure: json["pressure"],
+        humidity: json["humidity"],
+        seaLevel: json["seaLevel"],
+        temp: json["temp"],
+      );
 }
 
 class Sys {
@@ -80,6 +116,12 @@ class Sys {
   String country;
   int sunrise;
   int sunset;
+
+  factory Sys.fromJson(Map<String, dynamic> json) => Sys(
+        country: json["country"],
+        sunrise: json["sunrise"],
+        sunset: json["sunset"],
+      );
 }
 
 class WeatherElement {
@@ -94,6 +136,13 @@ class WeatherElement {
   String main;
   String description;
   String icon;
+
+  factory WeatherElement.fromJson(Map<String, dynamic> json) => WeatherElement(
+        id: json["id"],
+        main: json["main"],
+        description: json["description"],
+        icon: json["icon"],
+      );
 }
 
 class Wind {
@@ -103,7 +152,13 @@ class Wind {
     required this.gust,
   });
 
-  double speed;
+  int speed;
   int deg;
   double gust;
+
+  factory Wind.fromJson(Map<String, dynamic> json) => Wind(
+        speed: json["speed"],
+        deg: json["deg"],
+        gust: json["gust"],
+      );
 }
