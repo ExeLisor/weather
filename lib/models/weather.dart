@@ -1,8 +1,3 @@
-// To parse this JSON data, do
-//
-//     final weather = weatherFromMap(jsonString);
-
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 Weather weatherFromMap(String str) => Weather.fromMap(json.decode(str));
@@ -115,7 +110,7 @@ class ListElement {
     required this.wind,
     required this.visibility,
     required this.pop,
-    required this.rain,
+    //required this.rain,
     required this.sys,
     required this.dtTxt,
   });
@@ -127,7 +122,7 @@ class ListElement {
   Wind wind;
   int visibility;
   double pop;
-  Rain rain;
+  //Rain rain;
   Sys sys;
   DateTime dtTxt;
 
@@ -140,7 +135,7 @@ class ListElement {
         wind: Wind.fromMap(json["wind"]),
         visibility: json["visibility"],
         pop: json["pop"].toDouble(),
-        rain: Rain.fromMap(json["rain"]),
+        //rain: Rain.fromMap(json["rain"]),
         sys: Sys.fromMap(json["sys"]),
         dtTxt: DateTime.parse(json["dt_txt"]),
       );
@@ -153,7 +148,7 @@ class ListElement {
         "wind": wind.toMap(),
         "visibility": visibility,
         "pop": pop,
-        "rain": rain.toMap(),
+        //"rain": rain.toMap(),
         "sys": sys.toMap(),
         "dt_txt": dtTxt.toIso8601String(),
       };
@@ -223,21 +218,21 @@ class Main {
       };
 }
 
-class Rain {
-  Rain({
-    required this.the3H,
-  });
+// class Rain {
+//   Rain({
+//     required this.the3H,
+//   });
 
-  double the3H;
+//   double the3H;
 
-  factory Rain.fromMap(Map<String, dynamic> json) => Rain(
-        the3H: json["3h"].toDouble(),
-      );
+//   factory Rain.fromMap(Map<String, dynamic> json) => Rain(
+//         the3H: json["3h"],
+//       );
 
-  Map<String, dynamic> toMap() => {
-        "3h": the3H,
-      };
-}
+//   Map<String, dynamic> toMap() => {
+//         "3h": the3H,
+//       };
+// }
 
 class Sys {
   Sys({
