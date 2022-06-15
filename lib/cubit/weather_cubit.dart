@@ -11,11 +11,11 @@ class WeatherCubit extends Cubit<WeatherState> {
 
   WeatherCubit({required this.weatherRepoitory}) : super(WeatherInitial());
 
-  Future<void> fetchWeather(List pos) async {
+  Future<void> fetchWeather(List coordinates) async {
     emit(WeatherLoading());
     try {
-      final Weather? weather =
-          await weatherRepoitory.getWeather(pos[0], pos[1]);
+      Weather? weather =
+          await weatherRepoitory.getWeather(coordinates[0], coordinates[1]);
       emit(WeatherLoaded(weather: weather!));
     } on Failure catch (err) {
       emit(WeatherError(failure: err));
