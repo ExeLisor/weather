@@ -8,9 +8,8 @@ class WeatherRepoitory {
 
   final WeatherService weatherService;
 
-  Future<Weather?> getWeather() async {
-    final response =
-        await weatherService.getWeather('53.7001231', '23.8386737');
+  Future<Weather?> getWeather(String lat, String lon) async {
+    final response = await weatherService.getWeather(lat, lon);
     if (response != null) {
       final data = await response.transform(utf8.decoder).join();
       return Weather.fromMap(jsonDecode(data));

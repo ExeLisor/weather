@@ -11,6 +11,7 @@ class WeatherService {
         print(
             "https://api.openweathermap.org/data/2.5/forecast?lat=$lat&lon=$lon&cnt=40&appid=8e2c690febca531a10e946a7149ed8fb&units=metric&lang=ru");
         HttpClientRequest request = await client.getUrl(uri);
+
         HttpClientResponse response = await request.close();
         if (response.statusCode == 200) {
           return response;

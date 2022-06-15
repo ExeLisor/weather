@@ -1,5 +1,8 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:whether/cubit/geolocation_cubit.dart';
+import 'package:whether/cubit/internet_cubit.dart';
 import 'package:whether/cubit/weather_cubit.dart';
 import 'package:whether/services/weather_service.dart';
 import 'repository/weather_repository.dart';
@@ -8,24 +11,32 @@ import 'screens/home_page.dart';
 void main() {
   runApp(MyApp(
     weatherService: WeatherService(),
+    connectivity: Connectivity(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key, required this.weatherService}) : super(key: key);
+  const MyApp(
+      {Key? key, required this.weatherService, required this.connectivity})
+      : super(key: key);
 
   final WeatherService weatherService;
+  final Connectivity connectivity;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<InternetCubit>(
+          create: (context) => InternetCubit(connectivity: connectivity),
+        ),
+        BlocProvider<GeolocationCubit>(create: (context) => GeolocationCubit()),
         BlocProvider<WeatherCubit>(
           create: (context) => WeatherCubit(
             weatherRepoitory: WeatherRepoitory(
               weatherService: WeatherService(),
             ),
-          )..fetchWeather(),
+          ),
         ),
       ],
       child: MaterialApp(
