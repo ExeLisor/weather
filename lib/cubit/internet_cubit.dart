@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -17,7 +18,15 @@ class InternetCubit extends Cubit<InternetState> {
     checkInternetConnection();
   }
 
-  StreamSubscription<ConnectivityResult> checkInternetConnection() {
+  checkInternetConnection() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isEmpty && result[0].rawAddress.isEmpty) {
+        emitInternetConnected(true);
+      }
+    } on SocketException catch (_) {
+      emitInternetDisconnected();
+    }
     return connectivityStreamSubscription =
         connectivity.onConnectivityChanged.listen((connectivityResult) {
       if (connectivityResult == ConnectivityResult.wifi ||

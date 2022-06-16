@@ -23,4 +23,16 @@ class WeatherCubit extends Cubit<WeatherState> {
       print("Error: $e");
     }
   }
+
+  Future<void> fetchWeatherFromCache() async {
+    emit(WeatherLoading());
+    try {
+      Weather? weather = await weatherRepoitory.getWeatherFromCache();
+      emit(WeatherLoaded(weather: weather!));
+    } on Failure catch (err) {
+      emit(WeatherError(failure: err));
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:whether/models/weather.dart';
 import 'package:whether/services/weather_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WeatherRepoitory {
   WeatherRepoitory({required this.weatherService});
@@ -9,14 +10,25 @@ class WeatherRepoitory {
   final WeatherService weatherService;
 
   Future<Weather?> getWeather(String lat, String lon) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     final response = await weatherService.getWeather(lat, lon);
     if (response != null) {
       final data = await response.transform(utf8.decoder).join();
+      prefs.setString('weather', data);
+      prefs.setString("time", DateTime.now().toString());
+      print(prefs.getString("time"));
       return Weather.fromMap(jsonDecode(data));
     }
     return null;
   }
+
+  Future<Weather?> getWeatherFromCache() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? data = prefs.getString("weather");
+    return Weather.fromMap(jsonDecode(data ?? ''));
+  }
 }
+
 
 
 

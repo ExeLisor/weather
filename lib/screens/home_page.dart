@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whether/cubit/geolocation_cubit.dart';
 import 'package:whether/cubit/internet_cubit.dart';
 import 'package:whether/cubit/weather_cubit.dart';
@@ -29,9 +30,17 @@ class _HomePageState extends State<HomePage> {
         listener: (context, internetState) async {
           if (internetState is InternetConnected &&
               internetState.internetConnected) {
+            print("connected!");
             context.read<WeatherCubit>().fetchWeather(
                 await context.read<GeolocationCubit>().position());
-          } else {}
+          } else if (internetState is InternetDisconnected) {
+            context.read<WeatherCubit>().fetchWeatherFromCache();
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            print('no connection!');
+            // print(DateTime.now()
+            //     .difference(DateTime.parse(prefs.getString("time")!))
+            //     .inSeconds);
+          }
         },
         child: Center(
           child: BlocBuilder<WeatherCubit, WeatherState>(
